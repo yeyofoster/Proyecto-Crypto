@@ -36,8 +36,8 @@ public class Logout extends HttpServlet {
     	if(session != null){
     		session.invalidate();
     	}
-
-    	response.sendRedirect("client.jsp");
+        String pagina = request.getParameter("pagina");
+    	response.sendRedirect(pagina);
     }
 
 }

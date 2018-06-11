@@ -29,7 +29,7 @@ public class crypto {
   throws IOException {
   
 
-    File targetFile = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/crypto"+aux+".tmp");
+    File targetFile = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/crypto"+aux+".jpg");
     OutputStream outStream = new FileOutputStream(targetFile);
  
     byte[] buffer = new byte[8 * 1024];
@@ -46,11 +46,11 @@ public class crypto {
         // update sql
         Connection conn=Conexion.getConexion();
  
-        String updateSQL = "INSERT image (user_id,img_name,image,key,receiver)"
+        String updateSQL = "INSERT image (user_id,img_name,image,key2,receiver)"
                         + " VALUES(?,?,?,?,?)";
         int ret = 0;
-
-
+            
+        System.out.println("Entro al crypto");
         try (
                 PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
  
@@ -74,9 +74,11 @@ public class crypto {
         } catch (SQLException | FileNotFoundException e) {
             System.out.println(e.getMessage());
             ret=2;
+            System.out.println("crypto: "+ret);
         }
         return ret;
     }
+
    public static String readBlob(int candidateId,String name,int action) throws IOException {
         // update sql
         
@@ -87,7 +89,7 @@ public class crypto {
         InputStream input = null;
         File file = null;
         String ret = "";
- 
+
         try (Connection conn=Conexion.getConexion();
                 PreparedStatement pstmt = conn.prepareStatement(selectSQL);) {
             // set parameter;
@@ -97,20 +99,20 @@ public class crypto {
             // write binary stream into file
             int cont = 0;
  
-
+            System.out.println("action: "+action);
             while (rs.next()) {
                 if(cont==0){
                     if(action==0)
-                        ret="C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/enc_"+name;
+                        ret="C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/enc_"+rs.getInt("id")+""+name;
                     else
-                        ret="C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/"+name+".key";
+                        ret="C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/"+rs.getInt("id")+""+name+".key";
                     file = new File(ret);
                     output = new FileOutputStream(file);
                 }
                 if(action==0)
                     input = rs.getBinaryStream("image");
                 else
-                    input = rs.getBinaryStream("key");
+                    input = rs.getBinaryStream("key2");
                 byte[] buffer = new byte[1024];
                 while (input.read(buffer) > 0) {
                     output.write(buffer);

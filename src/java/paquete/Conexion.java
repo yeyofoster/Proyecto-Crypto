@@ -36,8 +36,10 @@ public static int num(String table) throws Exception {
         ResultSet resultSet = statement.executeQuery("select count(*) from "+table);
 
         while (resultSet.next()) {
-            return resultSet.getInt(1);
+            int ret=resultSet.getInt(1);
+            return ret;
         }
+        resultSet.close();
     } catch (Exception e) {
         System.out.println("ERROR. Reading rows");
     }

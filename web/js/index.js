@@ -31,8 +31,11 @@ $(document).ready(function(e) {
 						console.log(response);
 						alert("ERROR. The password or the user is wrong. Please try again.");
 					}else{
-                                            alert("Welcome "+response);
-                                            $(location).attr("href","client.jsp");
+						alert("Welcome "+response);
+						if(response=="artist")
+                            $(location).attr("href","artist.jsp");
+                        else
+                        	$(location).attr("href","client.jsp");
 					}
 				}
 			});

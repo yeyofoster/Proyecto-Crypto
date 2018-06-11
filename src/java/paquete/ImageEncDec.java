@@ -28,7 +28,7 @@ import javax.swing.JOptionPane;
 import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
 
 public class ImageEncDec {
-
+      
     /*
     getFile() es un método que lee el contenido de cualquier archivo y te lo regresa 
     como un arreglo de bytes para que tú lo puedas manejar a tu antojo. 
@@ -199,16 +199,20 @@ public class ImageEncDec {
     Solo necesita como parámetro un String que es el nombre con el que se desea guardar el archivo llave.
     */
     public static File llaveAES(String nombrellave) throws NoSuchAlgorithmException, IOException, NoSuchProviderException {
+        Security.addProvider(new BouncyCastleFipsProvider());
+        
         KeyGenerator keyGenerator;
         SecretKey key;
         File filellave = null;
         try {
+            
             keyGenerator = KeyGenerator.getInstance("AES", "BCFIPS");
             keyGenerator.init(128);
             key = keyGenerator.generateKey();
             System.out.println(key);
-            writeToFile( nombrellave + ".txt", Base64.getEncoder().encodeToString(key.getEncoded()).getBytes());
-            filellave = new File(nombrellave + ".txt");
+            writeToFile("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/"+ nombrellave + ".txt", Base64.getEncoder().encodeToString(key.getEncoded()).getBytes());
+            filellave = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/"+nombrellave + ".txt");
+            System.out.println("Si hizo la llave AES");
         } catch (IOException ioe) {
             System.out.println("Error al generar llave AES");
         }

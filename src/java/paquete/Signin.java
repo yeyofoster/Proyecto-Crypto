@@ -68,7 +68,7 @@ public class Signin extends HttpServlet {
         String pass = request.getParameter("pass2");
 
         String selectSQL = "SELECT * FROM user WHERE user=?";
-        ResultSet rs = null,rs2 = null;
+        ResultSet rs = null,rs2 = null,rs3=null;
         String text = "0";
         Connection conn=Conexion.getConexion();
         try (
@@ -89,9 +89,6 @@ public class Signin extends HttpServlet {
             try {
                 if (rs != null) {
                     rs.close();
-
-                }
-                else{
                     String insertSQL = "INSERT user (user,pass)"
                         + " VALUES(?,?)";
 
@@ -105,20 +102,58 @@ public class Signin extends HttpServlet {
                         pstmt2.executeUpdate();
                         
                             text=user;
-                            HttpSession session = request.getSession();
-                        
-                            session.setAttribute("user",text);
-                            session.setMaxInactiveInterval(30*60);
-                            Cookie userName = new Cookie("user", user);
-                            response.addCookie(userName);
+
+                            rs2 = pstmt2.executeQuery();
+                            rs2.close();
+     
                         
                     } catch (SQLException e) {
                         text="4";
                         System.out.println(e.getMessage());
                     }
                 }
+                else{
+
+                }
             } catch (SQLException e) {
                 text="5";
+                System.out.println(e.getMessage());
+            }
+        }
+        
+        selectSQL = "SELECT * FROM user WHERE user=? AND pass=?";
+        rs = null;
+
+ 
+        try (
+                PreparedStatement pstmt = conn.prepareStatement(selectSQL);) {
+                        // set parameter;
+                pstmt.setString(1, user);
+                pstmt.setString(2, pass);
+                rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    HttpSession session = request.getSession();
+                    text=rs.getString("user");
+                    session.setAttribute("user",text);
+                    session.setAttribute("id",rs.getInt("id"));
+                    session.setMaxInactiveInterval(5*60);
+                    Cookie userName = new Cookie("user", user);
+                    response.addCookie(userName);
+                    
+                    //Get the encoded URL string
+                }
+            } catch (SQLException e) {
+                text="6";
+
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                text="7";
                 System.out.println(e.getMessage());
             }
         }

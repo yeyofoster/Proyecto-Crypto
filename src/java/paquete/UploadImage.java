@@ -69,6 +69,7 @@ public class UploadImage extends HttpServlet {
        processRequest(request, response);
         String img_name =request.getParameter("img_name");
         String receiver =request.getParameter("receiver");
+        System.out.println("Receiver: "+receiver);
         int user_id = Integer.valueOf(request.getParameter("user_id"));
        
 
@@ -76,12 +77,18 @@ public class UploadImage extends HttpServlet {
         ResultSet rs = null,rs2 = null;
         String text = "0";
         Connection conn=Conexion.getConexion();
+                           int id = -1;
+                    
         try (
                 PreparedStatement pstmt = conn.prepareStatement(selectSQL);) {
                         // set parameter;
                 pstmt.setString(1, receiver);
                 rs = pstmt.executeQuery();
+                while(rs.next()){
+                    id=rs.getInt("id");
+                }
                 System.out.println("Se pudo consultar del usuario");
+
         } catch (SQLException e) {
                 text="2";
                 System.out.println("Hubo un error al consultar del usuario: ");
@@ -90,17 +97,20 @@ public class UploadImage extends HttpServlet {
         } finally {
             try {
                 if (rs != null) {
-
+                    rs.close();
+                    
                     Part filePart = request.getPart("image"); // Retrieves <input type="file" name="file">
                     String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
                     InputStream fileContent = filePart.getInputStream();
                     
                     int num_rows = Conexion.num("image");
                     File image = crypto.InputStreamToFile(fileContent,String.valueOf(num_rows));
+                    //File image = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/image1.jpg");
 
-                    File llaveAES = ImageEncDec.llaveAES("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/llave"+num_rows+".key");
-                    
-                    int ret=crypto.writeBlob(user_id,img_name,image,llaveAES,rs.getInt("id"));
+                    //File llaveAES = ImageEncDec.llaveAES("llave"+num_rows+".key");
+                    File llaveAES = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/llave6.txt");
+
+                    int ret=crypto.writeBlob(user_id,img_name,image,llaveAES,id);
                     if(ret==0){
                         System.out.println("No grabo en la BD");
                     }
@@ -110,14 +120,14 @@ public class UploadImage extends HttpServlet {
                     else{
                         System.out.println("Hubo un error al grabar en la BD");
                     }
-                    rs.close();
+                    
                 }
                 else{
                     System.out.println("No se encontro algun usuario relacionado en la base");
                 }
             } catch (SQLException e) {
                 text="5";
-                System.out.println("Hubo un error al intentar grabar en la tabla image");
+                System.out.println("Error al intentar grabar en la tabla image");
                 System.out.println(e.getMessage());
             } catch (Exception ex) {
                Logger.getLogger(UploadImage.class.getName()).log(Level.SEVERE, null, ex);

@@ -65,6 +65,7 @@ public class DownloadFileServlet extends HttpServlet {
         
         // reads input file from an absolute path
         int id = Integer.parseInt(request.getParameter("id"));
+        System.out.println("dl: "+request.getParameter("dl"));
         String path = crypto.readBlob(id,request.getParameter("name").toString(),Integer.parseInt(request.getParameter("dl")));
         File downloadFile = new File(path);
         FileInputStream inStream = new FileInputStream(downloadFile);

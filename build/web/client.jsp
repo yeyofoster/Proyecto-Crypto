@@ -69,11 +69,12 @@ for(Cookie cookie : cookies){
       $(document).ready(function() {
         
 
-        $("#Download_Image").on("click",function(){
-          $('#dl').val('0');
+        $(".Download_Image").on("click",function(){
+          $('.dl').val('0');
         });
-        $("#Download_Key").on("click",function(){
-          $('#dl').val('1');
+        $(".Download_Key").on("click",function(){
+          $('.dl').val('1');
+
         });
 
       });
@@ -128,6 +129,7 @@ for(Cookie cookie : cookies){
       	<div class="row">
             <div class="col s6 l6 input-field">
                 <form action="<%=response.encodeURL("Logout") %>" method="post">
+                  <input type="hidden" name="pagina" value="client.jsp">
 					       <input type="submit" class="btn red" value="Logout" >
 				      </form>  
             </div>
@@ -138,33 +140,15 @@ for(Cookie cookie : cookies){
         </div>
         <div class="container">
 
-            <div class="row center">
-              <div class="col s12 l6 input-field">
-                <!--<label for="user" id="luser"><strong>User:</strong></label>
-                  <input type="text" id="user" name="user" data-validetta="required" style=" font-size: 2em;">
-              	-->
-              </div>
-              <div class="col s12 l6 input-field">
-                <!--<label for="pass" id="lpass"><strong>Password:</strong></label>
-                  <input type="password" id="pass" name="pass" data-validetta="required" style=" font-size: 2em;">
-                 -->
-              </div>
-            </div>
 
-         
-            <br>
           <div class="row center">
             <div class="col s12 l12 input-field" id="openMod">
-                <div class="col s12 l6 input-field">
+                <div class="col s12 l12 input-field">
                 	<form method="post">
 						<input type="submit" class="btn black" value="Generate new keys" >
 					</form>
               	</div>
-				<div class="col s12 l6 input-field">
-                	<form action="<%=response.encodeURL("DownloadFileServlet") %>" method="get">
-						<input type="submit" class="btn black" value="Download digital certificate" >
-					</form>
-              	</div>
+
             </div>
           </div>
         </div>
@@ -220,6 +204,7 @@ for(Cookie cookie : cookies){
         String selectSQL = "SELECT * FROM image WHERE receiver=?";
         ResultSet rs = null;
         String text = "0";
+        int count=0;
  
         try (Connection conn=Conexion.getConexion();
                 PreparedStatement pstmt = conn.prepareStatement(selectSQL);) {
@@ -228,6 +213,7 @@ for(Cookie cookie : cookies){
                 System.out.println(id);
                 rs = pstmt.executeQuery();
           while (rs.next()) {
+          count++;
 
 
 
@@ -242,16 +228,16 @@ for(Cookie cookie : cookies){
       <div class="col s12 m12 l12">
         <input type="hidden" name="id" value="<%=rs.getString("id")%>">
         <input type="hidden" name="name" value="<%=rs.getString("img_name")%>">
-        <input type="hidden" name="dl" id="dl" value="0">
+        <input type="hidden" name="dl" class="dl" >
         <h4><%=rs.getString("img_name")%></h4>
       </div>
     </div>
     <div class="row center">
       <div class="col s12 m12 l6">
-        <input type="submit" class="btn blue" id="Download_Image" value="Download image" style="width:75%;">
+        <input type="submit" class="btn blue Download_Image" value="Download image" style="width:75%;">
       </div>
       <div class="col s12 m12 l6">
-        <input type="submit" class="btn green" id="Download_Key" value="Download key" style="width:75%;" >
+        <input type="submit" class="btn green Download_Key" value="Download key" style="width:75%;" >
       </div>
     </div>
   </form>
@@ -349,7 +335,7 @@ for(Cookie cookie : cookies){
     <div class="section">
             <div class="row center">
                 <div class="col s12 m12 l12">
-                    <h3 class="green-text"> Confirm the price to pay with digital certificate</h3>
+                    <h3 class="green-text"> Purposal to the artist:</h3>
                 </div>
             </div>
             <form>
@@ -369,6 +355,26 @@ for(Cookie cookie : cookies){
             </form>
     </div>
   </div>
+  <div class="parallax-container valign-wrapper" >
+    <div class="container">
+
+        <div class="row center">
+            <div class="col s12 m12 l12">
+                <h2 class="black-text">Decrypt Digital Certificates</h2>
+                <br>
+            </div>
+        </div>
+          <div class="row center">
+            <div class="col s12 m6 l12">
+              <form action="<%=response.encodeURL("DownloadEncImg") %>" method="post">
+                <input type="submit" class="btn white black-text" value="Download Decrypted Certificate" >
+            </div>
+          </div> 
+             
+    </div>
+    <div class="parallax"><img src="img/wu3.jpg" alt="Unsplashed background img 2"></div>
+  </div>
+
 
   <div class="parallax-container valign-wrapper" id="banner">
     <div class="section no-pad-bot">
@@ -383,7 +389,7 @@ for(Cookie cookie : cookies){
         <div class="row">
             <div class="col s6 l6 input-field">
                 <form action="<%=response.encodeURL("Logout") %>" method="post">
-                 <input type="submit" class="btn red" value="Logout" >
+                 <!--<input type="submit" class="btn red" value="Logout" >-->
               </form>  
             </div>
         </div>
