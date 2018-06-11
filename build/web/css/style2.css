@@ -1,0 +1,91 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+@font-face {
+    font-family: Homerun;
+    src: url(Homerun.ttf);
+}
+nav ul a,
+nav .brand-logo {
+  color:#1b7cff;
+}
+.fuente{
+  font-family: Homerun;
+  color:#00f3a6;
+}
+.azul-p{
+  color:#FFF;
+}
+#pie{
+  color:#005dff;
+}
+p {
+  line-height: 2rem;
+}
+#luser,#lpass{
+  font-size: 30px;
+  color:#00f3a6;
+}
+input{
+  font-size: 30px;
+  font-style: oblique;
+  color:#005dff;
+}
+.button-collapse {
+  color: #26a69a;
+}
+
+.parallax-container {
+  min-height: 32em;
+  line-height: 0;
+  height: auto;
+  color: rgba(255,255,255,.9);
+}
+#banner{
+  min-height: 20em;
+}
+  .parallax-container .section {
+    width: 100%;
+  }
+
+@media only screen and (max-width : 992px) {
+    .parallax-container {
+  min-height: 48em;
+  }
+  .parallax-container .section {
+    position: absolute;
+    top: 40%;
+    width: 100%;
+  }
+  #index-banner .section {
+    position: absolute;
+    top: 0%;
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width : 600px) {
+  .parallax-container {
+  min-height: 50em;
+  }
+  #index-banner .section {
+    position: absolute;
+    top: 0%;
+    width: 100%;
+  }
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+  font-size: inherit;
+}
+
+footer.page-footer {
+  margin: 0;
+}
