@@ -199,7 +199,7 @@ public class ImageEncDec {
     Solo necesita como parámetro un String que es el nombre con el que se desea guardar el archivo llave.
     */
     public static File llaveAES(String nombrellave) throws NoSuchAlgorithmException, IOException, NoSuchProviderException {
-        Security.addProvider(new BouncyCastleFipsProvider());
+
         
         KeyGenerator keyGenerator;
         SecretKey key;
@@ -210,8 +210,8 @@ public class ImageEncDec {
             keyGenerator.init(128);
             key = keyGenerator.generateKey();
             System.out.println(key);
-            writeToFile("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/"+ nombrellave + ".txt", Base64.getEncoder().encodeToString(key.getEncoded()).getBytes());
-            filellave = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/"+nombrellave + ".txt");
+            writeToFile("LlavesAES/" + nombrellave , Base64.getEncoder().encodeToString(key.getEncoded()).getBytes());
+            filellave = new File("LlavesAES/" +nombrellave );
             System.out.println("Si hizo la llave AES");
         } catch (IOException ioe) {
             System.out.println("Error al generar llave AES");
