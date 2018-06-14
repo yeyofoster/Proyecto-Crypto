@@ -70,8 +70,7 @@ for(Cookie cookie : cookies){
       $(document).ready(function() {
         
        
-                   $('#textarea1').val(' ');
-          M.textareaAutoResize($('#textarea1'));
+   
         
 
         $(".Download_Image").on("click",function(){
@@ -82,7 +81,8 @@ for(Cookie cookie : cookies){
           $('.dl').val('1');
           console.log($('.dl').val());
         });
-
+          $('#textarea1').val(' ');
+          M.textareaAutoResize($('#textarea1'));
       });
   </script>
 </head>
