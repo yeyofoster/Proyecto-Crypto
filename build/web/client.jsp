@@ -178,6 +178,7 @@ for(Cookie cookie : cookies){
                   <span>Select the image</span>
                   <input type="file" name="image" accept="image/*" data-validetta="required">
                 </div>
+                  <input type="hidden" name="page" id="page" value="client.jsp">
               <input type="hidden" name="user_id" id="user_id" value="<%=id%>">
               <input type="hidden" name="receiver" id="receiver" value="artist">
               <div class="file-path-wrapper">

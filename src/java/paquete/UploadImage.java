@@ -73,6 +73,7 @@ public class UploadImage extends HttpServlet {
         processRequest(request, response);
         
         String img_name = request.getParameter("img_name");
+        String page = request.getParameter("page");
         String receiver = request.getParameter("receiver");
         System.out.println("Receiver: " + receiver);
         int user_id = Integer.valueOf(request.getParameter("user_id"));
@@ -121,10 +122,13 @@ public class UploadImage extends HttpServlet {
                     int ret = crypto.writeBlob(user_id, img_name, enc_img, llaveAES, id);
 
                     if (ret == 0) {
+                        text="The image could not be saved, with another.";
                         System.out.println("No grabo en la BD");
                     } else if (ret == 1) {
+                        text="The image was successfully saved.";
                         System.out.println("Grabo en la BD");
                     } else {
+                        text="The image could not be saved, with another.";
                         System.out.println("Hubo un error al grabar en la BD");
                     }
 
@@ -140,9 +144,14 @@ public class UploadImage extends HttpServlet {
             }
         }
         System.out.println(text);
-        response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
-        response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
-        response.getWriter().write(text);       // Write response body.
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        
+        out.println("<script type=\"text/javascript\">");
+        out.println("alert('"+text+"');");
+        out.println("location='"+page+"';");
+        out.println("</script>");
+        response.sendRedirect("client.jsp"); 
 
     }
 
