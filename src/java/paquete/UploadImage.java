@@ -111,10 +111,15 @@ public class UploadImage extends HttpServlet {
                     File image = crypto.InputStreamToFile(fileContent, String.valueOf(num_rows)+img_name);
                     //File image = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/image1.jpg");
 
-                    File llaveAES = ImageEncDec.llaveAES("llave" + num_rows + ".key");
+                    File llaveAES = ImageEncDec.llaveAES("key" + num_rows + ".key");
                     //File llaveAES = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/llave6.txt");
                     //File llavenueva = ImageEncDec.llaveAES("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/llave6");
-                    int ret = crypto.writeBlob(user_id, img_name, image, llaveAES, id);
+                    
+                    ImageEncDec.saveFile(ImageEncDec.encryptPdfFile(llaveAES, ImageEncDec.getFile(image) ) , "C:/Users/Master/Documents/NetBeansProjects/crypto2/Enc/",num_rows+img_name) ;
+                    File enc_img = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/Enc/"+num_rows+img_name);
+                    //File llaveAES = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/llave6.txt");
+                    int ret = crypto.writeBlob(user_id, img_name, enc_img, llaveAES, id);
+
                     if (ret == 0) {
                         System.out.println("No grabo en la BD");
                     } else if (ret == 1) {

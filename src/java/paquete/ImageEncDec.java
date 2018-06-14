@@ -205,7 +205,7 @@ public class ImageEncDec {
         byte[] encodedkey = null;
         SecretKey key = null;
         try {
-            encodedkey = getFile("LlavesAES/", kname);
+            encodedkey = getFile("C:/Users/Master/Documents/NetBeansProjects/crypto2/LlavesAES/", kname);
             key = new SecretKeySpec(encodedkey, "AES");
             System.out.println(key);
         } catch (Exception e) {
@@ -228,8 +228,8 @@ public class ImageEncDec {
             keyGenerator.init(128);
             key = keyGenerator.generateKey();
             System.out.println(key);
-            writeToFile("C:/Users/Master/Documents/NetBeansProjects/crypto2/LlavesAES" + nombrellave , Base64.getEncoder().encodeToString(key.getEncoded()).getBytes());
-            filellave = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/LlavesAES" + nombrellave );
+            writeToFile("C:/Users/Master/Documents/NetBeansProjects/crypto2/LlavesAES/" + nombrellave , Base64.getEncoder().encodeToString(key.getEncoded()).getBytes());
+            filellave = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/LlavesAES/" + nombrellave );
             System.out.println("Si hizo la llave AES");
         } catch (IOException ioe) {
             System.out.println("Error al generar llave AES");

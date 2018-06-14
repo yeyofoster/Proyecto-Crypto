@@ -29,7 +29,7 @@ public class crypto {
   throws IOException {
   
 
-    File targetFile = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/crypto"+aux);
+    File targetFile = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/Temp/"+aux);
     OutputStream outStream = new FileOutputStream(targetFile);
  
     byte[] buffer = new byte[8 * 1024];
