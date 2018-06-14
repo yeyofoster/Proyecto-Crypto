@@ -7,10 +7,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -70,93 +76,106 @@ public class Signin extends HttpServlet {
         String selectSQL = "SELECT * FROM user WHERE user=?";
         ResultSet rs = null,rs2 = null,rs3=null;
         String text = "0";
+        int n=-1;
+
         Connection conn=Conexion.getConexion();
         try (
+           
                 PreparedStatement pstmt = conn.prepareStatement(selectSQL);) {
                         // set parameter;
+
                 pstmt.setString(1, user);
                 rs = pstmt.executeQuery();
-                while (rs.next()) {
-                    text="1";
-                    
-                    //Get the encoded URL string
-                }
+                n=Conexion.getNumberOfRows(rs);
+                while(rs.next())
+                    System.out.println("id: "+rs.getInt("id"));
+
             } catch (SQLException e) {
                 text="2";
 
             System.out.println(e.getMessage());
+        } catch (Exception ex) {
+            Logger.getLogger(Signin.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                if (rs != null) {
-                    rs.close();
-                    String insertSQL = "INSERT user (user,pass)"
-                        + " VALUES(?,?)";
-
-                    try (   
-                        PreparedStatement pstmt2 = conn.prepareStatement(insertSQL)) {
- 
-                        // set parameters
-                        pstmt2.setString(1, user);
-                        pstmt2.setString(2,pass);
- 
-                        pstmt2.executeUpdate();
-                        
-                            text=user;
-
-                            rs2 = pstmt2.executeQuery();
-                            rs2.close();
-     
-                        
-                    } catch (SQLException e) {
-                        text="4";
-                        System.out.println(e.getMessage());
-                    }
+                rs.close();
+                if (n != 0) {
+                    text="1";
+                    System.out.println("nn1: "+n);
+                    
                 }
                 else{
+                    System.out.println("nn2: "+n);
+                    
+                    text="3";
+                    GenerateKeys myKeys = null;
+                    try {
+                        myKeys = new GenerateKeys(1024);
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(GenerateSERVLET.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (NoSuchProviderException ex) {
+                        Logger.getLogger(GenerateSERVLET.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    myKeys.createKeys();
+                    String pubk= Arrays.toString(myKeys.getPublicKey().getEncoded());
+                    String privk= Arrays.toString(myKeys.getPrivateKey().getEncoded());
+                    System.out.println("Pubk :"+pubk);
+                    System.out.println("Privk :"+privk);
+                    
+                    int num_rows = Conexion.num("user");
+                    myKeys.writeToFile("C:/Users/Master/Documents/NetBeansProjects/crypto2/Llaves/temppubk"+num_rows+".txt", Base64.getEncoder().encode(myKeys.getPublicKey().getEncoded()));
+                    myKeys.writeToFile("C:/Users/Master/Documents/NetBeansProjects/crypto2/Llaves/tempprivk"+num_rows+".txt", Base64.getEncoder().encode(myKeys.getPrivateKey().getEncoded()));
+                    
+                    File pubkF= new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/Llaves/temppubk"+num_rows+".txt");
+                    File privkF= new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/Llaves/tempprivk"+num_rows+".txt");
+                    int ret = crypto.writeBlob3(user,pass,pubkF,privkF);
 
+                    selectSQL = "SELECT * FROM user WHERE user=? AND pass=?";
+                    rs2 = null;
+                    try (
+                            PreparedStatement pstmt2 = conn.prepareStatement(selectSQL);) {
+                                    // set parameter;
+                            pstmt2.setString(1, user);
+                            pstmt2.setString(2, pass);
+                            rs2 = pstmt2.executeQuery();
+                            while (rs2.next()) {
+                                HttpSession session = request.getSession();
+                                text=rs2.getString("user");
+                                session.setAttribute("user",text);
+                                session.setAttribute("id",rs2.getInt("id"));
+                                session.setMaxInactiveInterval(5*60);
+                                Cookie userName = new Cookie("user", user);
+                                response.addCookie(userName);
+                                
+                                //Get the encoded URL string
+                            }
+                        } catch (SQLException e) {
+                            text="6";
+            
+                        System.out.println(e.getMessage());
+                    } finally {
+                        try {
+                            if (rs2 != null) {
+            
+                                rs2.close();
+                            }
+                        } catch (SQLException e) {
+                            text="7";
+                            System.out.println(e.getMessage());
+                        }
+                    }
                 }
             } catch (SQLException e) {
                 text="5";
                 System.out.println(e.getMessage());
+            } catch (Exception ex) {
+                Logger.getLogger(Signin.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
-        selectSQL = "SELECT * FROM user WHERE user=? AND pass=?";
-        rs = null;
 
- 
-        try (
-                PreparedStatement pstmt = conn.prepareStatement(selectSQL);) {
-                        // set parameter;
-                pstmt.setString(1, user);
-                pstmt.setString(2, pass);
-                rs = pstmt.executeQuery();
-                while (rs.next()) {
-                    HttpSession session = request.getSession();
-                    text=rs.getString("user");
-                    session.setAttribute("user",text);
-                    session.setAttribute("id",rs.getInt("id"));
-                    session.setMaxInactiveInterval(5*60);
-                    Cookie userName = new Cookie("user", user);
-                    response.addCookie(userName);
-                    
-                    //Get the encoded URL string
-                }
-            } catch (SQLException e) {
-                text="6";
+        System.out.println("n= "+n);
 
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
-
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                text="7";
-                System.out.println(e.getMessage());
-            }
-        }
         System.out.println(text);
         response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
         response.setCharacterEncoding("UTF-8"); // You want world domination, huh?

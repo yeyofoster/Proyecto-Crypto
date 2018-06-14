@@ -135,7 +135,7 @@ for(Cookie cookie : cookies){
             </div>
         </div>
         <br><br>
-        <h2 class="header center teal-text text-lighten-2"><div style="color:#FFF; font-family: 'Times New Roman', Times, serif;">Hi <%=userName %>, Login successful. Your Session ID=<%=sessionID %></div></h2>
+        <h2 class="header center teal-text text-lighten-2"><div style="color:#FFF; font-family: 'Times New Roman', Times, serif;">Hi <%=userName %>, Login successful. </div></h2>
         <div class="row center">
         </div>
         <div class="container">
@@ -144,9 +144,12 @@ for(Cookie cookie : cookies){
           <div class="row center">
             <div class="col s12 l12 input-field" id="openMod">
                 <div class="col s12 l12 input-field">
-                	<form method="post">
-						<input type="submit" class="btn black" value="Generate new keys" >
-					</form>
+                	<form method="post" action="GenerateSERVLET">
+                    <input type="hidden" name="name" id="name" value="<%=userName%>">
+                    <input type="hidden" name="user_id" id="user_id" value="<%=id%>">
+                    <input type="hidden" name="page" value="client.jsp">
+						          <input type="submit" class="btn black" value="Generate new keys" >
+					       </form>
               	</div>
 
             </div>
@@ -166,7 +169,7 @@ for(Cookie cookie : cookies){
         <div class="icon-block">
           <div class="row center">
             <div class="col s12 m12 l12">
-              <h3 class="blue-text">Image upload</h3>
+              <h3 class="blue-text">Send an image to the artist</h3>
               <br>
             </div>
           </div>

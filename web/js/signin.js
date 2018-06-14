@@ -29,7 +29,7 @@ $(document).ready(function(e) {
                                         if(response=="1"){
                                             alert("The enter user is already taken. Please choose another username.");
                                         }
-                                        else if(response=="1" || response=="4" || response=="5") {
+                                        else if(response=="0" || response=="2" ||response=="4" || response=="5" || response=="6" || response=="7") {
 						console.log(response);
 						alert("ERROR. The password or the user is wrong. Please try again.");
 					}

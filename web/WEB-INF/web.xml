@@ -24,6 +24,10 @@
         <servlet-name>Logout</servlet-name>
         <servlet-class>paquete.Logout</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GenerateSERVLET</servlet-name>
+        <servlet-class>paquete.GenerateSERVLET</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
         <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenerateSERVLET</servlet-name>
+        <url-pattern>/GenerateSERVLET</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

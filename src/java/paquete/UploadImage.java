@@ -144,14 +144,15 @@ public class UploadImage extends HttpServlet {
             }
         }
         System.out.println(text);
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
         
-        out.println("<script type=\"text/javascript\">");
-        out.println("alert('"+text+"');");
-        out.println("location='"+page+"';");
-        out.println("</script>");
-        response.sendRedirect("client.jsp"); 
+        response.setContentType("text/html;charset=UTF-8");
+        
+        response.getWriter().write("<script>"+
+                "alert('"+text+"');"+
+                "location='"+page+"';"+
+                "</script>");
+        //response.sendRedirect(page);
+        
 
     }
 

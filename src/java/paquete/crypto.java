@@ -44,14 +44,14 @@ public class crypto {
 
     public static int writeBlob(int user_id, String img_name,File image, File key, int receiver) throws SQLException {
         // update sql
-        Connection conn=Conexion.getConexion();
- 
+       
+         Connection conn=Conexion.getConexion();
         String updateSQL = "INSERT image (user_id,img_name,image,key2,receiver)"
                         + " VALUES(?,?,?,?,?)";
         int ret = 0;
             
-        System.out.println("Entro al crypto");
-        try (
+
+        try ( 
                 PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
  
             // read the file
@@ -79,6 +79,95 @@ public class crypto {
         return ret;
     }
 
+        public static void writeBlob2(int user_id, File pubk, File privk) throws SQLException {
+            String selectSQL = "SELECT public_key FROM user WHERE id=?";
+ Connection conn=Conexion.getConexion();
+        ResultSet rs = null;
+        FileOutputStream output = null;
+        InputStream input = null;
+        File file = null;
+        String ret = "";
+
+        try (
+                PreparedStatement pstmt = conn.prepareStatement(selectSQL);) {
+            // set parameter;
+            pstmt.setInt(1, user_id);
+            rs = pstmt.executeQuery();
+ 
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                    String updateSQL = "UPDATE user SET public_key=? , private_key=?"
+                        + " WHERE id=?";
+ 
+                    try (
+                         Connection conn2=Conexion.getConexion();
+                        PreparedStatement pstmt2 = conn2.prepareStatement(updateSQL)) {
+                 
+                        // read the file
+                        FileInputStream inputPublic = new FileInputStream(pubk);
+                        FileInputStream inputPrivate = new FileInputStream(privk);
+                
+                        // set parameters
+                        pstmt2.setBinaryStream(1, inputPublic);
+                        pstmt2.setBinaryStream(2, inputPrivate);
+                        pstmt2.setInt(3, user_id);
+                 
+                        // store the resume file in database
+         
+                        System.out.println("Store file in the database.Blob2");
+                        pstmt2.executeUpdate();
+                        
+                 
+                    } catch (SQLException | FileNotFoundException e) {
+                        System.out.println(e.getMessage());
+                        
+                    }
+                }
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        
+    }
+    public static int writeBlob3(String user,String pass,File pubk, File privk) throws SQLException {
+        // update sql
+        Connection conn=Conexion.getConexion();
+ 
+        String updateSQL = "INSERT user (user,pass,public_key,private_key)"
+                        + " VALUES(?,?,?,?)";
+        int ret = 0;
+
+        try (
+                PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
+ 
+            // read the file
+            FileInputStream inputPublic = new FileInputStream(pubk);
+            FileInputStream inputPrivate = new FileInputStream(privk);
+
+            // set parameters
+            pstmt.setString(1, user);
+            pstmt.setString(2, pass);
+            pstmt.setBinaryStream(3, inputPublic);
+            pstmt.setBinaryStream(4, inputPrivate);
+
+ 
+            // store the resume file in database
+            System.out.println("Store file in the database.");
+            pstmt.executeUpdate();
+            ret = 1;
+ 
+        } catch (SQLException | FileNotFoundException e) {
+            System.out.println(e.getMessage());
+            ret=2;
+            System.out.println("crypto: "+ret);
+        }
+        return ret;
+    }
    public static String readBlob(int candidateId,String name,int action) throws IOException {
         // update sql
         

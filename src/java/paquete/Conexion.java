@@ -45,4 +45,15 @@ public static int num(String table) throws Exception {
     }
     return 0;
 }
+  public static int getNumberOfRows(ResultSet r) throws Exception {
+    Connection conn = getConexion();
+    Statement s = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+        ResultSet.CONCUR_READ_ONLY);
+
+    r.last();
+    int count = r.getRow();
+    r.beforeFirst();
+    return count;
+  }
+
 }
