@@ -36,7 +36,32 @@ public class ImageEncDec {
     tipo de variable, pasarlo a String y demás. 
     Recibe como parámetros 2 String: ruta del archivo y nombre del archivo
      */
-    public static byte[] getFile(String path, String archivo) {
+    public static byte[] getFile(File f) throws IOException {
+
+        InputStream is = null;
+        try {
+            is = new FileInputStream(f);
+        } catch (FileNotFoundException e2) {
+            // TODO Auto-generated catch block
+            e2.printStackTrace();
+        }
+        byte[] content = null;
+        try {
+            content = new byte[is.available()];
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        try {
+            is.read(content);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        is.close();
+        return content;
+    }
+    public static byte[] getFile(String path, String archivo) throws IOException {
 
         File f = new File(path + archivo);
         InputStream is = null;
@@ -59,7 +84,7 @@ public class ImageEncDec {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
+        is.close();
         return content;
     }
 
@@ -68,7 +93,7 @@ public class ImageEncDec {
         byte[] encrypted = null;
 
         try {
-            cipher = Cipher.getInstance("AES/CTR/NoPadding", "BCFIPS");
+            cipher = Cipher.getInstance("AES/CTR/NoPadding");
             cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(new byte[16]));
             encrypted = cipher.doFinal(content);
         } catch (Exception e) {
@@ -93,7 +118,7 @@ public class ImageEncDec {
             dir = Paths.get(llave.getPath());
             //System.out.println(dir);
             key = new SecretKeySpec(Files.readAllBytes(dir), 0, Files.readAllBytes(dir).length, "AES");
-            cipher = Cipher.getInstance("AES/CTR/NoPadding", "BCFIPS");
+            cipher = Cipher.getInstance("AES/CTR/NoPadding");
             cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(new byte[16]));
             encrypted = cipher.doFinal(content);
         } catch (Exception e) {
@@ -118,7 +143,7 @@ public class ImageEncDec {
             dir = Paths.get(llave.getPath());
             //System.out.println(dir);
             key = new SecretKeySpec(Files.readAllBytes(dir), 0, Files.readAllBytes(dir).length, "AES");
-            cipher = Cipher.getInstance("AES/CTR/NoPadding", "BCFIPS");
+            cipher = Cipher.getInstance("AES/CTR/NoPadding");
             cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(new byte[16]));
             decrypted = cipher.doFinal(textCryp);
         } catch (Exception e) {
@@ -132,7 +157,7 @@ public class ImageEncDec {
 
         byte[] decrypted = null;
         try {
-            cipher = Cipher.getInstance("AES/CTR/NoPadding", "BCFIPS");
+            cipher = Cipher.getInstance("AES/CTR/NoPadding");
             cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(new byte[16]));
             decrypted = cipher.doFinal(textCryp);
         } catch (Exception e) {
@@ -184,7 +209,7 @@ public class ImageEncDec {
         byte[] encodedkey = null;
         SecretKey key = null;
         try {
-            encodedkey = getFile("LlavesAES/", kname + ".txt");
+            encodedkey = getFile("LlavesAES/", kname);
             key = new SecretKeySpec(encodedkey, "AES");
             System.out.println(key);
         } catch (Exception e) {
@@ -198,20 +223,17 @@ public class ImageEncDec {
     llavAES() sirve para generar una llave AES de longitud de 128 bits.
     Solo necesita como parámetro un String que es el nombre con el que se desea guardar el archivo llave.
     */
-    public static File llaveAES(String nombrellave) throws NoSuchAlgorithmException, IOException, NoSuchProviderException {
-
-        
+    public static File llaveAES(String nombrellave) throws NoSuchAlgorithmException, IOException{
         KeyGenerator keyGenerator;
         SecretKey key;
         File filellave = null;
         try {
-            
-            keyGenerator = KeyGenerator.getInstance("AES", "BCFIPS");
+            keyGenerator = KeyGenerator.getInstance("AES");
             keyGenerator.init(128);
             key = keyGenerator.generateKey();
             System.out.println(key);
             writeToFile("LlavesAES/" + nombrellave , Base64.getEncoder().encodeToString(key.getEncoded()).getBytes());
-            filellave = new File("LlavesAES/" +nombrellave );
+            filellave = new File("LlavesAES/" + nombrellave );
             System.out.println("Si hizo la llave AES");
         } catch (IOException ioe) {
             System.out.println("Error al generar llave AES");

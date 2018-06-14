@@ -67,14 +67,11 @@ for(Cookie cookie : cookies){
   <script>
 
       $(document).ready(function() {
-        
-
         $(".Download_Image").on("click",function(){
           $('.dl').val('0');
         });
         $(".Download_Key").on("click",function(){
           $('.dl').val('1');
-
         });
 
       });
@@ -145,8 +142,9 @@ for(Cookie cookie : cookies){
             <div class="col s12 l12 input-field" id="openMod">
                 <div class="col s12 l12 input-field">
                 	<form method="post">
-						<input type="submit" class="btn yellow black-text" value="Generate new keys" >
-					</form>
+                    <input type="hidden" name="user" value="<%=userName %>">
+						        <input type="submit" class="btn yellow black-text" value="Generate new keys" >
+					       </form>
               	</div>
 
             </div>

@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.Security;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,7 +39,7 @@ public class UploadImage extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException{
 
     }
 
@@ -52,7 +55,7 @@ public class UploadImage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
     }
 
     /**
@@ -60,13 +63,15 @@ public class UploadImage extends HttpServlet {
      *
      * @param request servlet request
      * @param response servlet response
+     * @throws java.security.NoSuchProviderException
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException, ServletException {
         processRequest(request, response);
+        
         String img_name = request.getParameter("img_name");
         String receiver = request.getParameter("receiver");
         System.out.println("Receiver: " + receiver);
@@ -103,7 +108,7 @@ public class UploadImage extends HttpServlet {
                     InputStream fileContent = filePart.getInputStream();
 
                     int num_rows = Conexion.num("image");
-                    File image = crypto.InputStreamToFile(fileContent, String.valueOf(num_rows));
+                    File image = crypto.InputStreamToFile(fileContent, String.valueOf(num_rows)+img_name);
                     //File image = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/image1.jpg");
 
                     File llaveAES = ImageEncDec.llaveAES("llave" + num_rows + ".key");
