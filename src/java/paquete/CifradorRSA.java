@@ -1,8 +1,5 @@
 package paquete;
 
-import static com.ipn.CifradorImagenAES.ImageEncDec.getFile;
-import static com.ipn.CifradorImagenAES.ImageEncDec.saveFile;
-import com.ipn.util.Ventanas;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.System.exit;

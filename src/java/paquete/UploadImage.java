@@ -109,10 +109,10 @@ public class UploadImage extends HttpServlet {
                     InputStream fileContent = filePart.getInputStream();
 
                     int num_rows = Conexion.num("image");
-                    File image = crypto.InputStreamToFile(fileContent, String.valueOf(num_rows)+img_name);
+                    File image = crypto.InputStreamToFile(fileContent, "Enc"+String.valueOf(num_rows)+img_name);
                     //File image = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/image1.jpg");
 
-                    File llaveAES = ImageEncDec.llaveAES("key" + num_rows + ".key");
+                    File llaveAES = ImageEncDec.llaveAES("Enc_key" + num_rows + ".key");
                     //File llaveAES = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/llave6.txt");
                     //File llavenueva = ImageEncDec.llaveAES("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/llave6");
                     
@@ -121,6 +121,7 @@ public class UploadImage extends HttpServlet {
                     //File llaveAES = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/llave6.txt");
                     int ret = crypto.writeBlob(user_id, img_name, enc_img, llaveAES, id);
 
+                    fileContent.close();
                     if (ret == 0) {
                         text="The image could not be saved, with another.";
                         System.out.println("No grabo en la BD");

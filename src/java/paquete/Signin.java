@@ -143,7 +143,7 @@ public class Signin extends HttpServlet {
                                 text=rs2.getString("user");
                                 session.setAttribute("user",text);
                                 session.setAttribute("id",rs2.getInt("id"));
-                                session.setMaxInactiveInterval(5*60);
+                                session.setMaxInactiveInterval(20*60);
                                 Cookie userName = new Cookie("user", user);
                                 response.addCookie(userName);
                                 

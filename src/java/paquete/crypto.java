@@ -37,10 +37,11 @@ public class crypto {
     while ((bytesRead = initialStream.read(buffer)) != -1) {
         outStream.write(buffer, 0, bytesRead);
     }
-    IOUtils.closeQuietly(initialStream);
-    IOUtils.closeQuietly(outStream);
+    initialStream.close();
+    outStream.close();
     return targetFile;
 }
+
 
     public static int writeBlob(int user_id, String img_name,File image, File key, int receiver) throws SQLException {
         // update sql
@@ -192,9 +193,9 @@ public class crypto {
             while (rs.next()) {
                 if(cont==0){
                     if(action==0)
-                        ret="C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/enc_"+rs.getInt("id")+""+name;
+                        ret="C:/Users/Master/Documents/NetBeansProjects/crypto2/Temp/"+rs.getInt("id")+""+name;
                     else
-                        ret="C:/Users/Master/Documents/NetBeansProjects/crypto2/src/java/paquete/img/"+rs.getInt("id")+""+name+".key";
+                        ret="C:/Users/Master/Documents/NetBeansProjects/crypto2/Temp/"+rs.getInt("id")+""+name+".key";
                     file = new File(ret);
                     output = new FileOutputStream(file);
                 }
@@ -207,6 +208,69 @@ public class crypto {
                     output.write(buffer);
                 }
                 cont++;
+                output.close();
+                input.close();
+            }
+        } catch (SQLException | IOException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return ret;
+ 
+    }
+   public static String readBlob2(int candidateId,String pubk,String privk) throws IOException {
+        // update sql
+        
+
+            String selectSQL = "SELECT * FROM user WHERE id=?";
+        ResultSet rs = null;
+        FileOutputStream outputPub = null;
+        FileOutputStream outputPriv = null;
+        InputStream inputPub = null;
+        InputStream inputPriv = null;
+        File filePub = null;
+        File filePriv = null;
+        String ret = "";
+
+        try (Connection conn=Conexion.getConexion();
+                PreparedStatement pstmt = conn.prepareStatement(selectSQL);) {
+            // set parameter;
+            pstmt.setInt(1, candidateId);
+            rs = pstmt.executeQuery();
+ 
+            // write binary stream into file
+ 
+            while (rs.next()) {
+                filePub = new File(pubk);
+                outputPub = new FileOutputStream(filePub);
+
+                filePriv = new File(privk);
+                outputPriv = new FileOutputStream(filePriv);
+                
+                inputPub = rs.getBinaryStream("public_key");
+                inputPriv = rs.getBinaryStream("private_key");
+
+                byte[] buffer1 = new byte[1024];
+                while (inputPub.read(buffer1) > 0) {
+                    outputPub.write(buffer1);
+                }
+
+                byte[] buffer2 = new byte[1024];
+                while (inputPriv.read(buffer2) > 0) {
+                    outputPriv.write(buffer2);
+                }
+                outputPriv.close();
+                inputPriv.close();
+
+                outputPub.close();
+                inputPub.close();
             }
         } catch (SQLException | IOException e) {
             System.out.println(e.getMessage());

@@ -28,6 +28,14 @@
         <servlet-name>GenerateSERVLET</servlet-name>
         <servlet-class>paquete.GenerateSERVLET</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CifrarServlet</servlet-name>
+        <servlet-class>paquete.CifrarServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EncryptPurposal</servlet-name>
+        <servlet-class>paquete.EncryptPurposal</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -55,6 +63,14 @@
     <servlet-mapping>
         <servlet-name>GenerateSERVLET</servlet-name>
         <url-pattern>/GenerateSERVLET</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CifrarServlet</servlet-name>
+        <url-pattern>/CifrarServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EncryptPurposal</servlet-name>
+        <url-pattern>/EncryptPurposal</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

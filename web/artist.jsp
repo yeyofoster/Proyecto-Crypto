@@ -62,16 +62,23 @@ for(Cookie cookie : cookies){
 
 <script src="js/confirm/jquery-confirm.min.js"></script>
 
-
   <script src="js/init.js"></script>
   <script>
 
+        
       $(document).ready(function() {
+        
+       
+                   $('#textarea1').val(' ');
+          M.textareaAutoResize($('#textarea1'));
+        
+
         $(".Download_Image").on("click",function(){
           $('.dl').val('0');
         });
         $(".Download_Key").on("click",function(){
           $('.dl').val('1');
+
         });
 
       });
@@ -123,12 +130,12 @@ for(Cookie cookie : cookies){
   <div id="index-banner" class="parallax-container">
 
       <div class="container">
-      	<div class="row">
+        <div class="row">
             <div class="col s6 l6 input-field">
                 <form action="<%=response.encodeURL("Logout") %>" method="post">
-                  <input type="hidden" name="pagina" value="artist.jsp">
-					       <input type="submit" class="btn red" value="Logout" >
-				      </form>  
+                  <input type="hidden" name="pagina" value="client.jsp">
+                 <input type="submit" class="btn red" value="Logout" >
+              </form>  
             </div>
         </div>
         <br><br>
@@ -141,11 +148,13 @@ for(Cookie cookie : cookies){
           <div class="row center">
             <div class="col s12 l12 input-field" id="openMod">
                 <div class="col s12 l12 input-field">
-                	<form method="post">
-                    <input type="hidden" name="user" value="<%=userName %>">
-						        <input type="submit" class="btn yellow black-text" value="Generate new keys" >
-					       </form>
-              	</div>
+                  <form method="post" action="GenerateSERVLET">
+                    <input type="hidden" name="name" id="name" value="<%=userName%>">
+                    <input type="hidden" name="user_id" id="user_id" value="<%=id%>">
+                    <input type="hidden" name="page" value="artist.jsp">
+                      <input type="submit" class="btn yellow black-text" value="Generate new keys" >
+                 </form>
+                </div>
 
             </div>
           </div>
@@ -162,42 +171,8 @@ for(Cookie cookie : cookies){
     <div class="section">
       <!--   Icon Section   -->
         <div class="icon-block">
-          <div class="row center">
-            <div class="col s12 m12 l12">
-               <h3 class="blue-text">Send an image to a client</h3>
-              <br>
-            </div>
-          </div>
-            
-          <form enctype="multipart/form-data" id="uploadImage" action="UploadImage" method="post">
-            <div class="row">
-              <div class="file-field input-field">
-                <div class="btn">
-                  <span>Select the image</span>
-                  <input type="file" name="image" accept="image/*" data-validetta="required">
-                </div>
-              <input type="hidden" name="user_id" id="user_id" value="<%=id%>">
-              <input type="hidden" name="page" id="page" value="artist.jsp">
-              <div class="file-path-wrapper">
-                  <input class="file-path validate" name="img_name" type="text">
-              </div>
-              </div>
 
-            <div class="row">
-              <div class="col s12 l12 input-field">
-                <label for="user">User:</label>
-                <input type="text" name="receiver" id="receiver"  data-validetta="required">
-              </div>
-            </div>
-              </div>
-              <div class="row center">
-                  <input type="submit" class="btn purple" value="Submit" >
-              </div>
-          </form>
-        </div>
-        <div class="row center">
-          <p style="color: #888;">- - - - - - - - - - - - - - - - - - - - - - - - - -</p>
-        </div>
+
         <div class="row center">
             <div class="col s12 m12 l12">
               <h3 class="blue-text">Received images</h3>
@@ -268,43 +243,82 @@ for(Cookie cookie : cookies){
         }
 
 %>
-
+      </div>
     </div>
   </div>
 
 
-
-
   <div class="parallax-container valign-wrapper" >
     <div class="container">
+
+          <div class="row center">
+            <div class="col s12 m12 l12">
+              <h3 class="white-text">Send an image to the client</h3>
+              <br>
+            </div>
+          </div>
+            
+          <form enctype="multipart/form-data" id="uploadImage" action="UploadImage" method="post">
+            <div class="row">
+              <div class="file-field input-field">
+                <div class="btn">
+                  <span>Select the image</span>
+                  <input type="file" name="image" accept="image/*" required data-validetta="required">
+                </div>
+                <input type="hidden" name="page" id="page" value="artist.jsp">
+                <input type="hidden" name="user_id" id="user_id" value="<%=id%>">
+
+                <div class="file-path-wrapper">
+                  <input class="file-path validate white-text" name="img_name" type="text">
+                </div>
+              </div>
+            </div>
+              <div class="row center">
+                <div class="col s12 m12 l12">
+                  <label for="textarea1">Enter the username:</label>
+                  <input type="text" id="receiver" name="receiver" required data-validetta="required">
+                </div>
+              </div>
+            <div class="row center">
+                <input type="submit" class="btn black" value="Submit" >
+            </div>
+          </form>       
+             
+    </div>
+    <div class="parallax"><img src="img/wa2.jpg" alt="Unsplashed background img 2"></div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <!--   Icon Section   -->
+        <div class="icon-block">
         <div class="row center">
             <div class="col s12 m12 l12">
-                <h2 class="black-text">Decrypt an image</h2>
+                <h2 class="purple-text">Decrypt an image</h2>
                 <br>
             </div>
         </div>
         <div class="row center">
             <div class="col s12 m12 l12">
-                <h3 class="yellow-text">Steps:</h3>
+                <h3 class="darkblue-text">Steps:</h3>
             </div>
         </div>
 
-  
+      <form enctype="multipart/form-data" action="CifrarServlet" method="POST">
+        <input type="hidden" name="page" value="artist.jsp">
         <div class="row center">
             <div class="col s12 m12 l12">
-                <h4 class="white-text">1) Upload the files</h4>
+                <h4 class="blue-text">1) Upload the files</h4>
             </div>
         </div>
         <div class="row">
             <div class=" col s12 m12 l12 file-field input-field">
                 <div class="btn">
                     <span>Select the encrypted image</span>
-                    <input type="file" name="enc_img" accept="image/*" data-validetta="required">
-                    
+                    <input type="file" name="enc_img" required data-validetta="required">
                 </div>
-                <input type="hidden" name="user" id="user" value="admin">
                 <div class="file-path-wrapper">
-                    <input class="file-path validate white-text" type="text">
+                    <input class="file-path validate black-text" name="enc_img_name" type="text">
                 </div>
             </div>
         </div>
@@ -312,44 +326,58 @@ for(Cookie cookie : cookies){
           <div class=" col s12 m12 l12 file-field input-field">
             <div class="btn">
                 <span>Select the encrypted key</span>
-                <input type="file" name="enc_key" >         
+                <input type="file" name="enc_key" required>         
             </div>
             <div class="file-path-wrapper">
-                <input class="file-path validate white-text" type="text" data-validetta="required">
+                <input class="file-path validate black-text" type="text" name="enc_key_name"  data-validetta="required">
             </div>
           </div>
         </div>
         <div class="row center">
           <div class="col s12 m12 l12">
-              <h4 class="white-text">2) Download the decrypted img</h4>
+            <h4 class="blue-text">2) Enter the username:</h4>
+            <input type="text" id="receiver" name="receiver" class="black-text" required data-validetta="required">
+          </div>
+        </div>
+        <div class="row center">
+          <div class="col s12 m12 l12">
+              <h4 class="blue-text">3) Download the decrypted img</h4>
           </div>
         </div>
         <div class="row center">
           <div class="col s12 m6 l12">
-            <form action="<%=response.encodeURL("DownloadEncImg") %>" method="post">
-	          <input type="submit" class="btn black" value="Download Decrypted Image" >
+            <input type="submit" class="btn black" value="Download Decrypted Image" >
           </div>
-        </div>                    
+        </div>  
+      </form>
     </div>
-    <div class="parallax"><img src="img/wa2.jpg" alt="Unsplashed background img 2"></div>
   </div>
+</div>
 
 
 
-  <div class="container">
-    <div class="section">
+  <div class="parallax-container valign-wrapper" >
+    <div class="container">
+            
             <div class="row center">
                 <div class="col s12 m12 l12">
-                    <h3 class="green-text"> Purposal to the client:</h3>
+                    <h3 class="green-text"> Purposal to the client</h3>
                 </div>
             </div>
-            <form>
+
+            <form action="EncryptPurposal" method="POST">
               <div class="row center">
-                <div class="col s12 m12 l12 input-fields">
+                <div class="input-field col s12 l12">
                   <i class="material-icons prefix">account_circle</i>
   
-                  <input name="message" id="icon_prefix" type="text" class="validate" data-validetta="required,maxLength[255]">
-                  <label for="icon_prefix">Enter the message:</label>
+                  <textarea id="textarea1" class="materialize-textarea black-text" name="texto" required></textarea>
+                  <label for="textarea1">Enter the message:</label>
+                </div>
+              </div>
+              <div class="row center">
+                <div class="col s12 m12 l12">
+                  <label for="textarea1">Enter the username:</label>
+                  <input type="text" id="receiver" name="receiver" class="black-text" required data-validetta="required">
                 </div>
               </div>
               <div class="row center">
@@ -358,26 +386,84 @@ for(Cookie cookie : cookies){
                 </div>
               </div>
             </form>
+
     </div>
+    <div class="parallax"><img src="img/wa3.jpg" alt="Unsplashed background img 2"></div>
   </div>
-  <div class="parallax-container valign-wrapper" >
-    <div class="container">
+
+  <div class="container">
+    <div class="section">
+      <!--   Icon Section   -->
+        <div class="icon-block">
 
         <div class="row center">
             <div class="col s12 m12 l12">
-                <h2 class="black-text">Decrypt Digital Certificates</h2>
+                <h2 class="black-text">Decrypt Purposals</h2>
                 <br>
             </div>
         </div>
-          <div class="row center">
-            <div class="col s12 m6 l12">
-              <form action="<%=response.encodeURL("DownloadEncImg") %>" method="post">
-                <input type="submit" class="btn white black-text" value="Download Decrypted Certificate" >
-            </div>
-          </div> 
+<%
+
+        selectSQL = "SELECT * FROM purposal WHERE receiver=?";
+        rs = null;
+        text = "0";
+        count=0;
+ 
+        try (Connection conn=Conexion.getConexion();
+                PreparedStatement pstmt = conn.prepareStatement(selectSQL);) {
+                        // set parameter;
+                pstmt.setString(1, id);
+                System.out.println(id);
+                rs = pstmt.executeQuery();
+          while (rs.next()) {
+          count++;
+
+%>
+  <form action='<%=response.encodeURL("DownloadFileServlet") %>' method='post'>
+    <div class="row center">
+      <div class="col s12 m12 l12">
+        <img class="responsive-img" src="img/certificate.png" style="max-width: 15%">
+      </div>
+    </div>
+    <div class="row center">
+      <div class="col s12 m12 l12">
+        <input type="hidden" name="id" value="<%=rs.getString("id")%>">
+        <input type="hidden" name="name" value="<%=rs.getString("img_name")%>">
+        <input type="hidden" name="dl" class="dl" >
+        <h4><%=rs.getString("img_name")%></h4>
+      </div>
+    </div>
+    <div class="row center">
+      <div class="col s12 m12 l12">
+        <input type="submit" class="btn blue Download_Image" value="Download Purposal" style="width:75%;">
+      </div>
+    </div>
+  </form>
+  <div class="row center">
+    <p style="color: #888;">- - - - - - - - - - - - - - - - - - - - - - - - - -</p>
+  </div>
+<%
+                }
+            } catch (SQLException e) {
+                text="2";
+
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                text="3";
+                System.out.println(e.getMessage());
+            }
+        }
+
+%>
              
     </div>
-    <div class="parallax"><img src="img/wa3.jpg" alt="Unsplashed background img 2"></div>
+    </div>
   </div>
 
 
