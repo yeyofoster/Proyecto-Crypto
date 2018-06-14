@@ -61,8 +61,11 @@ public class EncryptPurposal extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        String mensaje = request.getParameter("texto");
+        String receiver = request.getParameter("receiver");
         try {
-            new VerifyMessage("C:/Users/Master/Documents/NetBeansProjects/crypto2/Mensaje/SignedData.txt", "C:/Users/Master/Documents/NetBeansProjects/crypto2/Llaves/publicKey.txt");
+
+            new Message(mensaje, "C:/Users/Master/Documents/NetBeansProjects/crypto2/Llaves/userprivk1985.txt").writeToFile("C:/Users/Master/Documents/NetBeansProjects/crypto2/Mensaje/SignedData.txt");
         } catch (Exception ex) {
             Logger.getLogger(EncryptPurposal.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -360,7 +360,7 @@ for(Cookie cookie : cookies){
               <div class="row center">
                 <div class="input-field col s12 l12">
                   <i class="material-icons prefix">account_circle</i>
-  
+                  <input type="hidden" name="receiver" value="artist">
                   <textarea id="textarea1" class="materialize-textarea blue-text" name="texto" required></textarea>
                   <label for="textarea1">Enter the message:</label>
                 </div>
