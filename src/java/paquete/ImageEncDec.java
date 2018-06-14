@@ -11,21 +11,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import static java.lang.System.exit;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.Security;
 import java.util.Base64;
 import javax.crypto.KeyGenerator;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.swing.JOptionPane;
-import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
+
 
 public class ImageEncDec {
       
@@ -232,11 +228,12 @@ public class ImageEncDec {
             keyGenerator.init(128);
             key = keyGenerator.generateKey();
             System.out.println(key);
-            writeToFile("LlavesAES/" + nombrellave , Base64.getEncoder().encodeToString(key.getEncoded()).getBytes());
-            filellave = new File("LlavesAES/" + nombrellave );
+            writeToFile("C:/Users/Master/Documents/NetBeansProjects/crypto2/LlavesAES" + nombrellave , Base64.getEncoder().encodeToString(key.getEncoded()).getBytes());
+            filellave = new File("C:/Users/Master/Documents/NetBeansProjects/crypto2/LlavesAES" + nombrellave );
             System.out.println("Si hizo la llave AES");
         } catch (IOException ioe) {
             System.out.println("Error al generar llave AES");
+            System.out.println(ioe);
         }
         return filellave;
     }
