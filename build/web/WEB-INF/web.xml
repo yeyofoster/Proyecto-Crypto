@@ -2,19 +2,19 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
         <servlet-name>Login</servlet-name>
-        <servlet-class>paquete.Login</servlet-class>
+        <servlet-class>com.ipn.servlets.Login</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DownloadFileServlet</servlet-name>
-        <servlet-class>paquete.DownloadFileServlet</servlet-class>
+        <servlet-class>com.ipn.servlets.DownloadFileServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Signin</servlet-name>
-        <servlet-class>paquete.Signin</servlet-class>
+        <servlet-class>com.ipn.servlets.Signin</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UploadImage</servlet-name>
-        <servlet-class>paquete.UploadImage</servlet-class>
+        <servlet-class>com.ipn.servlets.UploadImage</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
@@ -22,15 +22,15 @@
     </servlet>
     <servlet>
         <servlet-name>Logout</servlet-name>
-        <servlet-class>paquete.Logout</servlet-class>
+        <servlet-class>com.ipn.servlets.Logout</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>GenerateSERVLET</servlet-name>
-        <servlet-class>paquete.GenerateSERVLET</servlet-class>
+        <servlet-class>com.ipn.servlets.GenerateSERVLET</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CifrarServlet</servlet-name>
-        <servlet-class>paquete.CifrarServlet</servlet-class>
+        <servlet-class>com.ipn.servlets.CifrarServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EncryptPurposal</servlet-name>

@@ -67,50 +67,11 @@ public class EncryptPurposal extends HttpServlet {
         processRequest(request, response);
         String mensaje = request.getParameter("texto");
         String receiver = request.getParameter("r2");
-        System.out.println("Texto: "+mensaje);
-        System.out.println("receiver: "+receiver);
+        System.out.println("Texto: " + mensaje);
+        System.out.println("receiver: " + receiver);
         try {
-        /*
-        String selectSQL = "SELECT * FROM user WHERE user=?";
-        ResultSet rs = null, rs2 = null;
-        String text = "0";
-        Connection conn = Conexion.getConexion();
-        int id = -1;
-
-        try (
-                PreparedStatement pstmt = conn.prepareStatement(selectSQL);) {
-            // set parameter;
-            pstmt.setString(1, receiver);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                id = rs.getInt("id");
-            }
-            System.out.println("Se pudo consultar del usuario");
-
-        } catch (SQLException e) {
-            text = "2";
-            System.out.println("Hubo un error al consultar del usuario: ");
-            System.out.println(e.getMessage());
-
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                    String rutaLlave="C:/Users/Master/Documents/NetBeansProjects/crypto2/Llaves/tempprivk"+id+receiver+".txt";
-                    String res = crypto.readBlob2(id,rutaLlave,"C:/Users/Master/Documents/NetBeansProjects/crypto2/Llaves/tempprivk"+id+receiver+".txt");
-
-                } else {
-                    System.out.println("No se encontro algun usuario relacionado en la base");
-                }
-            } catch (SQLException e) {
-                text = "5";
-                System.out.println("Error al intentar grabar en la tabla image");
-                System.out.println(e.getMessage());
-            } catch (Exception ex) {
-                Logger.getLogger(UploadImage.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }*/
-            new Message(mensaje, "C:/Users/Master/Documents/NetBeansProjects/crypto2/Llaves/userprivk1985.txt").writeToFile("C:/Users/Master/Documents/NetBeansProjects/crypto2/Mensaje/tempMessartistuser.txt");
+            //new Message(mensaje, "C:/Users/Master/Documents/NetBeansProjects/crypto2/Llaves/userprivk1985.txt").writeToFile("C:/Users/Master/Documents/NetBeansProjects/crypto2/Mensaje/tempMessartistuser.txt");
+            new Message(mensaje, "C:/Users/yeyof/Desktop/AES-image-cipher-system/Llaves/userprivk1985.txt").writeToFile("C:/Users/yeyof/Desktop/AES-image-cipher-system/Mensaje/tempMessartistuser.txt");
         } catch (Exception ex) {
             Logger.getLogger(EncryptPurposal.class.getName()).log(Level.SEVERE, null, ex);
         }
