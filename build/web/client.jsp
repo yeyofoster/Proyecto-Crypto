@@ -349,18 +349,18 @@ for(Cookie cookie : cookies){
 
   <div class="parallax-container valign-wrapper" >
     <div class="container">
-            
             <div class="row center">
                 <div class="col s12 m12 l12">
                     <h3 class="green-text"> Purposal to the artist</h3>
                 </div>
-            </div>
+            </div>    
 
             <form action="EncryptPurposal" method="POST">
+              <input type="hidden" name="r2" value="artist">
               <div class="row center">
                 <div class="input-field col s12 l12">
                   <i class="material-icons prefix">account_circle</i>
-                  <input type="hidden" name="receiver" value="artist">
+                 
                   <textarea id="textarea1" class="materialize-textarea blue-text" name="texto" required></textarea>
                   <label for="textarea1">Enter the message:</label>
                 </div>

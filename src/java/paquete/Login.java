@@ -5,10 +5,13 @@ package paquete;
 import paquete.Conexion;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -18,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.DatatypeConverter;
 
 /**
  *
@@ -72,7 +76,23 @@ public class Login extends HttpServlet {
         System.out.println("Entro");
         String user =request.getParameter("user");
         String pass = request.getParameter("pass");
-
+        
+        /*
+        Fracción try para pasar la llave ingresada por el usuario a un SHA-256
+         */
+        String passsha256 = null;
+        MessageDigest digest;
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+            digest.update(pass.getBytes("UTF-8"), 0, pass.length());
+            //passsha256 = DatatypeConverter.printHexBinary(digest.digest());
+            passsha256 = new String(Base64.getEncoder().encode(digest.digest()));
+            System.out.println("LLave pasada a SHA256");
+            System.out.println(passsha256);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Signin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         String selectSQL = "SELECT * FROM user WHERE user=? AND pass=?";
         ResultSet rs = null;
         String text = "0";
@@ -81,7 +101,7 @@ public class Login extends HttpServlet {
                 PreparedStatement pstmt = conn.prepareStatement(selectSQL);) {
                         // set parameter;
                 pstmt.setString(1, user);
-                pstmt.setString(2, pass);
+                pstmt.setString(2, passsha256);
                 rs = pstmt.executeQuery();
                 while (rs.next()) {
                     HttpSession session = request.getSession();
